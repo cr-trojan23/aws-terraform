@@ -29,7 +29,7 @@ data "archive_file" "ziplambda" {
 }
 
 resource "aws_s3_bucket" "s3bucket" {
-  bucket = "a-bucket-with-a-unique-name-1"
+  bucket = "a-bucket-with-a-unique-name-2"
 
   tags = {
     "Name"      = "Sample bucket",
@@ -52,7 +52,6 @@ resource "aws_s3_bucket_public_access_block" "blocks3access" {
 
 resource "aws_iam_role" "iam_for_lambda" {
   name = "iam_for_lambda"
-
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
