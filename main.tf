@@ -4,6 +4,14 @@ terraform {
       source = "hashicorp/aws"
     }
   }
+  
+  backend "s3" {
+    encrypt = false
+    bucket = "tf-state-backend1"
+    dynamodb_table = "tf-statelock"
+    key = "terraform-tfstate"
+    region = "ap-south-1"
+  }
 
   required_version = ">= 1.2.0"
 }
