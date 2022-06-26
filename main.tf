@@ -60,11 +60,11 @@ EOF
 }
 
 resource "aws_lambda_function" "sample_lambda" {
-  filename         = "lambda.zip"
+  filename         = "data.archive_file.ziplambda.output_path"
   function_name    = "sample-lambda"
   role             = aws_iam_role.iam_for_lambda.arn
   handler          = "testfile.handler"
-  source_code_hash = filebase64sha256("lambda.zip")
+  source_code_hash = "data.archive_file.ziplambda.output_base64sha256"
   runtime          = "python3.6"
   tags = {
     "Name"      = "Test Lambda Func",

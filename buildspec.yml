@@ -3,7 +3,6 @@ version: 0.2
 phases:
   install:
     commands:
-      - "apt update -y"
       - "apt install unzip -y"
       - "wget https://releases.hashicorp.com/terraform/1.2.3/terraform_1.2.3_linux_amd64.zip"
       - "unzip terraform_1.2.3_linux_amd64.zip"
