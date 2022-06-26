@@ -4,13 +4,13 @@ terraform {
       source = "hashicorp/aws"
     }
   }
-  
+
   backend "s3" {
-    encrypt = false
-    bucket = "tf-state-backend1"
+    encrypt        = false
+    bucket         = "tf-state-backend1"
     dynamodb_table = "tf-statelock"
-    key = "terraform-tfstate"
-    region = "ap-south-1"
+    key            = "terraform-tfstate"
+    region         = "ap-south-1"
   }
 
   required_version = ">= 1.2.0"
@@ -37,31 +37,34 @@ resource "aws_s3_bucket" "s3bucket" {
   }
 }
 
-resource "aws_iam_role" "iam_role_for_tf" {
-  name               = "iam_role_for_tf"
+
+
+resource "aws_iam_role" "iam_for_lambda" {
+  name = "iam_for_lambda"
+
   assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
     {
-        "version": "2012-10-17",
-        "Statement": [
-            {
-            "Action": "sts:AssumeRole",
-            "Principal": {
-                "Service": "lambda.amazonaws.com"
-            },
-            "Effect": "Allow",
-            "Sid": ""
-            }
-        ]
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "lambda.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
     }
-    EOF
+  ]
+}
+EOF
 }
 
 resource "aws_lambda_function" "sample_lambda" {
   filename         = "lambda.zip"
   function_name    = "sample-lambda"
-  role             = aws_iam_role.iam_role_for_tf.arn
+  role             = aws_iam_role.iam_for_lambda.arn
   handler          = "testfile.handler"
-  source_code_hash = data.archive_file.ziplambda.output_base64sha256
+  source_code_hash = filebase64sha256("lambda.zip")
   runtime          = "python3.6"
   tags = {
     "Name"      = "Test Lambda Func",
