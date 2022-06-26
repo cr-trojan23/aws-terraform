@@ -37,6 +37,11 @@ resource "aws_s3_bucket" "s3bucket" {
   }
 }
 
+resource "aws_s3_bucket_acl" "s3acl" {
+  bucket = aws_s3_bucket.s3bucket
+  acl    = "private"
+}
+
 
 
 resource "aws_iam_role" "iam_for_lambda" {
@@ -60,11 +65,11 @@ EOF
 }
 
 resource "aws_lambda_function" "sample_lambda" {
-  filename         = "${data.archive_file.ziplambda.output_path}"
+  filename         = data.archive_file.ziplambda.output_path
   function_name    = "sample-lambda"
   role             = aws_iam_role.iam_for_lambda.arn
   handler          = "testfile.handler"
-  source_code_hash = "${data.archive_file.ziplambda.output_base64sha256}"
+  source_code_hash = data.archive_file.ziplambda.output_base64sha256
   runtime          = "python3.6"
   tags = {
     "Name"      = "Test Lambda Func",
