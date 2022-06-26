@@ -9,9 +9,9 @@ terraform {
 }
 
 provider "aws" {
-  region                   = "ap-south-1"
-  shared_config_files      = ""
-  shared_credentials_files = ""
+  region     = "ap-south-1"
+  access_key = ""
+  secret_key = ""
 }
 
 data "archive_file" "ziplambda" {
