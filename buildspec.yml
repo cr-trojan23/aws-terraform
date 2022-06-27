@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     commands:
-      - "apt install unzip -y"
+      - "yum install wget unzip -y"
       - "wget https://releases.hashicorp.com/terraform/1.2.3/terraform_1.2.3_linux_amd64.zip"
       - "unzip terraform_1.2.3_linux_amd64.zip"
       - "mv terraform /usr/local/bin/"
@@ -12,7 +12,7 @@ phases:
       - terraform init
   build:
     commands:
-      - terraform $TFC -auto-approve
+      - terraform apply -auto-approve
   post_build:
     commands:
       - echo terraform apply completed at `date`

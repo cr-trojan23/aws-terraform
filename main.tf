@@ -6,11 +6,10 @@ terraform {
   }
 
   backend "s3" {
-    encrypt        = false
-    bucket         = "tf-state-backend1"
-    dynamodb_table = "tf-statelock"
-    key            = "terraform-tfstate"
-    region         = "ap-south-1"
+    encrypt = false
+    bucket  = "tf-state-backend1"
+    key     = "terraform-tfstate"
+    region  = "ap-south-1"
   }
 
   required_version = ">= 1.2.0"
@@ -51,7 +50,7 @@ resource "aws_s3_bucket_public_access_block" "blocks3access" {
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "iam_for_lambda"
+  name               = "iam_for_lambda"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
