@@ -31,7 +31,9 @@ Resources:
       ProviderType: GitHub
       Tags:
         - Key: 'Name'
-          Value: 'gh-connection'
+          Value: 'github-terraform-connection'
+        - Key: 'CreatedBy'
+          Value: 'AWS CFN'
 
   TerraformStateBucket:
     Type: AWS::S3::Bucket
@@ -42,6 +44,8 @@ Resources:
       Tags:
         - Key: 'Name'
           Value: 'tf-state-backend1'
+        - Key: 'CreatedBy'
+          Value: 'AWS CFN'
 
   ArtifactBucket:
     Type: AWS::S3::Bucket
@@ -52,10 +56,13 @@ Resources:
       Tags:
         - Key: 'Name'
           Value: 'artifacts-bucket-v1'
+        - Key: 'CreatedBy'
+          Value: 'AWS CFN'
 
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
+      Name: "Deploy Terraform Template"
       RoleArn: !GetAtt PipelineRole.Arn
       ArtifactStore:
         Type: S3
@@ -92,6 +99,11 @@ Resources:
               Configuration:
                 ProjectName: !Ref BuildProject
               RunOrder: 1
+      Tags:
+        - Key: 'Name'
+          Value: 'Deploy Terraform Template'
+        - Key: 'CreatedBy'
+          Value: 'AWS CFN'
   
   PipelineRole:
     Type: AWS::IAM::Role
@@ -106,6 +118,11 @@ Resources:
       Path: /
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AdministratorAccess
+      Tags:
+        - Key: 'Name'
+          Value: 'PipelineRole'
+        - Key: 'CreatedBy'
+          Value: 'AWS CFN'
   
   BuildProject:
     Type: AWS::CodeBuild::Project
@@ -138,6 +155,11 @@ Resources:
             post_build:
               commands:
                 - echo terraform apply completed at `date`
+      Tags:
+        - Key: 'Name'
+          Value: 'cf-terraform-build'
+        - Key: 'CreatedBy'
+          Value: 'AWS CFN'
   
   CodeBuildServiceRole:
     Type: AWS::IAM::Role
@@ -150,4 +172,9 @@ Resources:
             Service: codebuild.amazonaws.com
           Action: sts:AssumeRole
       ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/PowerUserAccess
+        - arn:aws:iam::aws:policy/AdministratorAccess
+      Tags:
+        - Key: 'Name'
+          Value: 'CodeBuildServiceRole'
+        - Key: 'CreatedBy'
+          Value: 'AWS CFN'

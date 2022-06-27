@@ -28,7 +28,7 @@ data "archive_file" "ziplambda" {
 }
 
 resource "aws_s3_bucket" "s3bucket" {
-  bucket = "a-bucket-with-a-unique-name-2"
+  bucket = "a-bucket-with-a-unique-name-3"
 
   tags = {
     "Name"      = "Sample bucket",
@@ -39,6 +39,10 @@ resource "aws_s3_bucket" "s3bucket" {
 resource "aws_s3_bucket_acl" "s3acl" {
   bucket = aws_s3_bucket.s3bucket.id
   acl    = "private"
+  tags   = {
+    "Name"      = "Sample bucket ACL",
+    "CreatedBy" = "Terraform"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "blocks3access" {
@@ -47,6 +51,10 @@ resource "aws_s3_bucket_public_access_block" "blocks3access" {
   block_public_policy     = true
   restrict_public_buckets = true
   ignore_public_acls      = true
+  tags                   = {
+    "Name"      = "Sample bucket public access block",
+    "CreatedBy" = "Terraform"
+  }
 }
 
 resource "aws_iam_role" "iam_for_lambda" {
