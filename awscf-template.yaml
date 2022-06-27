@@ -62,7 +62,7 @@ Resources:
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
-      Name: "Deploy Terraform Template"
+      Name: "Deploy-TerraformTemplate"
       RoleArn: !GetAtt PipelineRole.Arn
       ArtifactStore:
         Type: S3
